@@ -6,9 +6,8 @@ var ehCPF = function(strCPF) {
 
 	if (strCPF == "00000000000") return false;
 
-	var soma;
+	var soma = 0;
   var resto;
-  soma = 0;
 
 	for (i=1; i<=9; i++) soma = soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
 	resto = (soma * 10) % 11;
