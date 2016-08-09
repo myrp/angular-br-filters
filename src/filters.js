@@ -2,6 +2,29 @@ var BrM = require('br-masks');
 
 var m = angular.module('idf.br-filters', []);
 
+var ehCPF = function(strCPF) {
+
+	if (strCPF == "00000000000") return false;
+
+	var soma;
+  var resto;
+  soma = 0;
+
+	for (i=1; i<=9; i++) soma = soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+	resto = (soma * 10) % 11;
+
+  if ((resto == 10) || (resto == 11))  resto = 0;
+  if (resto != parseInt(strCPF.substring(9, 10)) ) return false;
+
+	soma = 0;
+  for (i = 1; i <= 10; i++) soma = soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+  resto = (soma * 10) % 11;
+
+  if ((resto == 10) || (resto == 11))  resto = 0;
+  if (resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+  return true;
+}
+
 module.exports = m.name;
 
 m.filter('percentage', ['$filter', function($filter) {
@@ -35,6 +58,16 @@ m.filter('percentage', ['$filter', function($filter) {
 }])
 .filter('brCpfCnpj', [function() {
 	return function(input) {
+		if(!input) return input;
+
+		if(ehCPF(input))
+			return BrM.cpf(input);
+
+		if(input.length < 14) {
+			var pad = "00000000000000"
+			input = pad.substring(0, pad.length - input.length) + input
+		}
+
 		return BrM.cpfCnpj(input);
 	};
 }])

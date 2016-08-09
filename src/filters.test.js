@@ -99,6 +99,7 @@ describe('br-filters', function() {
 			expect(testFilter('brCpfCnpj')('97070868669')).toBe('970.708.686-69');
 			expect(testFilter('brCpfCnpj')('1435151')).toBe('143.515.1');
 			expect(testFilter('brCpfCnpj')('10157471000161')).toBe('10.157.471/0001-61');
+			expect(testFilter('brCpfCnpj')('82772000110')).toBe('00.082.772/0001-10');
 		});
 	});
 
