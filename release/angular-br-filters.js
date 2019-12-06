@@ -409,25 +409,25 @@ var BrM = require('br-masks');
 var m = angular.module('idf.br-filters', []);
 
 var ehCPF = function(strCPF) {
-
+	if (strCPF.replace(/[^\d]+/g, "").length > 11) return false;
 	if (strCPF == "00000000000") return false;
 
 	var soma = 0;
-  var resto;
+	var resto;
 
 	for (i=1; i<=9; i++) soma = soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
-	resto = (soma * 10) % 11;
+		resto = (soma * 10) % 11;
 
-  if ((resto == 10) || (resto == 11))  resto = 0;
-  if (resto != parseInt(strCPF.substring(9, 10)) ) return false;
+	if ((resto == 10) || (resto == 11))  resto = 0;
+	if (resto != parseInt(strCPF.substring(9, 10)) ) return false;
 
 	soma = 0;
-  for (i = 1; i <= 10; i++) soma = soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
-  resto = (soma * 10) % 11;
+	for (i = 1; i <= 10; i++) soma = soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+		resto = (soma * 10) % 11;
 
-  if ((resto == 10) || (resto == 11))  resto = 0;
-  if (resto != parseInt(strCPF.substring(10, 11) ) ) return false;
-  return true;
+	if ((resto == 10) || (resto == 11))  resto = 0;
+	if (resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+	return true;
 }
 
 module.exports = m.name;
@@ -488,8 +488,8 @@ m.filter('percentage', ['$filter', function($filter) {
 		}
 
 		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-			currencySym = '';
+		thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+		currencySym = '';
 
 		if (currency === true) {
 			currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM + ' ';
@@ -511,22 +511,22 @@ m.filter('percentage', ['$filter', function($filter) {
 	 * return the age based on the birthdate or undefined if value is invalid.
 	 */
 	 return function calculateAge(value) {
-		 if (!value) {
-			 return undefined;
-		 }
-		 var isDateInstance = (value instanceof Date);
-		 var isValidType = isDateInstance || !isNaN(parseInt(value));
-		 if (!isValidType) {
-			 return undefined;
-		 }
-		 var birthdate = isDateInstance ? value : new Date(value);
-		 if (birthdate > new Date()) {
-			 return undefined;
-		 }
-		 var ageDifMs = Date.now() - birthdate.getTime();
+	 	if (!value) {
+	 		return undefined;
+	 	}
+	 	var isDateInstance = (value instanceof Date);
+	 	var isValidType = isDateInstance || !isNaN(parseInt(value));
+	 	if (!isValidType) {
+	 		return undefined;
+	 	}
+	 	var birthdate = isDateInstance ? value : new Date(value);
+	 	if (birthdate > new Date()) {
+	 		return undefined;
+	 	}
+	 	var ageDifMs = Date.now() - birthdate.getTime();
 		 var ageDate = new Date(ageDifMs); // miliseconds from epoch
 		 return Math.abs(ageDate.getUTCFullYear() - 1970);
-	 };
-});
+		};
+	});
 
 },{"br-masks":1}]},{},[3]);
